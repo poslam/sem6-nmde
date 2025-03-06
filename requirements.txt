@@ -1,0 +1,8 @@
+numpy
+sympy
+tabulate
+isort
+black
+ipykernel
+matplotlib
+pandas
