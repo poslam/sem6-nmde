@@ -6,4 +6,4 @@ black
 ipykernel
 matplotlib
 pandas
-"black[jupyter]"
+black[jupyter]
