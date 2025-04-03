@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 
 
-def solve_hyperbolic_eq(a, l, T, h, tau, phi, psi, mu1, mu2, f=None):
+def solve_hyperbolic_eq(a, l, T, h, tau, phi, psi, mu1, mu2, f=lambda x, t: 0):
     """
     Решает волновое уравнение с помощью явной разностной схемы.
 
@@ -18,8 +18,6 @@ def solve_hyperbolic_eq(a, l, T, h, tau, phi, psi, mu1, mu2, f=None):
         mu1, mu2: граничные условия u(0, t) = mu1(t), u(l, t) = mu2(t)
         f: функция источника f(x, t) (по умолчанию 0)
     """
-    if f is None:
-        f = lambda x, t: 0
 
     Nx = int(l / h) + 1  # Число узлов по пространству
     Nt = int(T / tau) + 1  # Число узлов по времени
@@ -61,28 +59,54 @@ def solve_hyperbolic_eq(a, l, T, h, tau, phi, psi, mu1, mu2, f=None):
     return x, t, u
 
 
-a = 1.0
-l = 1.0
-T = 600
+a = 1
+l = 1
+T = 6
 h = 0.02
 tau = 0.02
 
-phi = lambda x: 0
-psi = lambda x: 0
-mu1 = lambda t: t**2 - t
-mu2 = lambda t: 3 * t**2
+# вариант 5
 
-# phi = lambda x: np.sin(np.pi * x)
+# l = 10
+# T = 100
+# ax.set_ylim(-1, 300)
+
+# phi = lambda x: 0
 # psi = lambda x: 0
-# mu1 = lambda t: 0
-# mu2 = lambda t: 0
+# mu1 = lambda t: t**2 - t
+# mu2 = lambda t: 3 * t**2
+# f = lambda x, t: 0
 
-x, t, u = solve_hyperbolic_eq(a, l, T, h, tau, phi, psi, mu1, mu2)
+# вариант 10
+
+# l = 1
+# T = 100
+# ax.set_ylim(-100, 3)
+
+# phi = lambda x: 0
+# psi = lambda x: 0
+# mu1 = lambda t: -3 * t**2
+# mu2 = lambda t: -2 * t
+# f = lambda x, t: 0
+
+# вариант 13
+
+# l = 1
+# T = 6
+# ax.set_ylim(-1, 1)
+
+phi = lambda x: x * (1 - x)
+psi = lambda x: x**3 - x**2
+mu1 = lambda t: 0
+mu2 = lambda t: 0
+f = lambda x, t: t * x**2 * (1 - x)
+
+x, t, u = solve_hyperbolic_eq(a, l, T, h, tau, phi, psi, mu1, mu2, f)
 
 fig, ax = plt.subplots()
 (line,) = ax.plot(x, u[0, :], "b-", lw=2)
 ax.set_xlim(0, l)
-ax.set_ylim(-5, 10000)
+ax.set_ylim(-1, 1)
 ax.set_xlabel("x")
 ax.set_ylabel("u(x, t)")
 ax.set_title("Волновое уравнение: численное решение")
@@ -101,5 +125,5 @@ def update(frame):
 
 line.set_ydata(u[start_frame, :])
 
-ani = FuncAnimation(fig, update, frames=len(t), interval=0.0001)
+ani = FuncAnimation(fig, update, frames=len(t), interval=1)
 plt.show()
