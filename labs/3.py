@@ -53,8 +53,8 @@ def heat_equation_cn(L, T, Nx, Nt, alpha, u_init, mu, beta):
 
 L = 4
 T = 1
-N = 100
-M = 20000
+N = 10
+M = 100
 alpha = 16 / np.pi
 
 x = np.linspace(0, L, N + 1)
