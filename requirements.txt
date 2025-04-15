@@ -9,3 +9,4 @@ pandas
 black[jupyter]
 scipy
 ipywidgets
+multiprocess
